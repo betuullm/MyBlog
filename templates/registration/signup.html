@@ -1,0 +1,12 @@
+{% extends 'blog/base.html' %}
+{% block content %}
+<div class="container" style="max-width:400px;margin:auto;">
+    <h2>Kayıt Ol</h2>
+    <form method="post">
+        {% csrf_token %}
+        {{ form.as_p }}
+        <button type="submit" class="btn btn-success">Kayıt Ol</button>
+    </form>
+    <p>Zaten hesabınız var mı? <a href="{% url 'login' %}">Giriş Yap</a></p>
+</div>
+{% endblock %}

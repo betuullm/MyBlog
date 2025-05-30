@@ -1,0 +1,68 @@
+{% extends 'blog/base.html' %}
+{% load static %}
+
+{% block content %}
+<div class="container mt-5" style="max-width:800px;margin:4.5rem auto 2rem auto;background:#fff;padding:2.5rem 2rem 2.5rem 2rem;border-radius:16px;box-shadow:0 2px 16px rgba(0,0,0,0.08);">
+    <h2 style="text-align:center;font-weight:700;">Yeni Yazı Oluştur</h2>
+    <form method="post" enctype="multipart/form-data">
+        {% csrf_token %}
+        <div class="mb-3">
+            {{ form.title.label_tag }}<br>
+            {{ form.title }}
+        </div>
+        <div class="mb-3">
+            <label>Yazı Görselleri (Birden fazla seçebilirsiniz)</label><br>
+            {{ formset.management_form }}
+            {% for image_form in formset %}
+                {{ image_form.image }}<br>
+            {% endfor %}
+        </div>
+        <div class="mb-3">
+            <label>İçerik</label>
+            <div id="editor" style="min-height:220px;background:#fafaff;">{{ form.content.value|safe }}</div>
+            <textarea name="content" id="id_content" style="display:none;">{{ form.content.value|safe }}</textarea>
+        </div>
+        <button type="submit" class="btn btn-success">Yayınla</button>
+    </form>
+</div>
+
+<!-- Quill.js CDN -->
+<link href="https://cdn.quilljs.com/1.3.6/quill.snow.css" rel="stylesheet">
+<link href="https://fonts.googleapis.com/css?family=Roboto|Merriweather|Montserrat|Lora|Oswald&display=swap" rel="stylesheet">
+<script src="https://cdn.quilljs.com/1.3.6/quill.js"></script>
+<!-- Quill Emoji -->
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/quill-emoji@0.1.7/dist/quill-emoji.css">
+<script src="https://cdn.jsdelivr.net/npm/quill-emoji@0.1.7/dist/quill-emoji.js"></script>
+
+<script>
+  var Font = Quill.import('formats/font');
+  Font.whitelist = ['sans-serif', 'serif', 'monospace', 'roboto', 'merriweather', 'montserrat', 'lora', 'oswald'];
+  Quill.register(Font, true);
+
+  var quill = new Quill('#editor', {
+    theme: 'snow',
+    modules: {
+      toolbar: [
+        [{ 'font': ['sans-serif', 'serif', 'monospace', 'roboto', 'merriweather', 'montserrat', 'lora', 'oswald'] }, { 'size': [] }],
+        ['bold', 'italic', 'underline', 'strike'],
+        [{ 'color': [] }, { 'background': [] }],
+        [{ 'script': 'sub'}, { 'script': 'super' }],
+        [{ 'header': '1' }, { 'header': '2' }, 'blockquote', 'code-block'],
+        [{ 'list': 'ordered'}, { 'list': 'bullet' }, { 'indent': '-1'}, { 'indent': '+1' }],
+        ['direction', { 'align': [] }],
+        ['link', 'image', 'video'],
+        ['emoji']
+      ],
+      'emoji-toolbar': true,
+      'emoji-textarea': false,
+      'emoji-shortname': true
+    },
+    placeholder: 'Yazınızı buraya yazın...'
+  });
+
+  // Form submit'te Quill içeriğini textarea'ya aktar
+  document.querySelector('form').onsubmit = function() {
+    document.getElementById('id_content').value = quill.root.innerHTML;
+  };
+</script>
+{% endblock %}

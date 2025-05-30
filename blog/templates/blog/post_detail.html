@@ -1,0 +1,17 @@
+{% extends 'blog/base.html' %}
+{% load static %}
+{% block content %}
+<div style="display:flex;justify-content:center;align-items:center;min-height:70vh;background:#f4f5f7;">
+    <div style="background:#fff;padding:2.5rem 2.5rem 2.5rem 2.5rem;border-radius:18px;box-shadow:0 2px 16px rgba(0,0,0,0.08);max-width:900px;width:100%;display:flex;flex-direction:column;align-items:center;">
+        {% if post.image %}
+            <img src="{{ post.image.url }}" alt="{{ post.title }}" style="width:100%;max-width:850px;height:auto;display:block;border-radius:16px;margin-bottom:1.8rem;object-fit:cover;">
+        {% endif %}
+        <h1 style="margin-bottom:1.2rem;font-size:2rem;font-weight:700;color:#1a237e;font-family:'Poppins','Segoe UI',Arial,sans-serif;text-align:center;">{{ post.title }}</h1>
+        <div style="margin:2rem 0 1.5rem 0;font-size:1.15rem;line-height:1.7;text-align:justify;color:#222;font-weight:400;font-family:'Roboto', Arial, sans-serif;">
+            {{ post.content|safe }}
+        </div>
+        <p style="color:#888;font-size:0.95rem;margin-bottom:1.5rem;">By {{ post.author }} on {{ post.created_at|date:'d M Y H:i' }}</p>
+        <a href="{% url 'post_list' %}" style="background:#a259c6;color:#fff;padding:0.6rem 1.5rem;border-radius:8px;text-decoration:none;font-weight:600;font-size:1.05rem;transition:background 0.18s;">← Tüm Bloglar</a>
+    </div>
+</div>
+{% endblock %}

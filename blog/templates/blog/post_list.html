@@ -1,0 +1,22 @@
+{% extends 'blog/base.html' %}
+{% load static %}
+{% block content %}
+<div style="display:flex;flex-wrap:wrap;justify-content:center;gap:2.5rem 2rem;">
+    {% for post in posts %}
+        <div style="background:#fff;border-radius:18px;box-shadow:0 2px 16px rgba(0,0,0,0.08);padding:2.2rem 2rem 2.5rem 2rem;max-width:340px;width:100%;display:flex;flex-direction:column;align-items:center;">
+            {% if post.image %}
+                <img src="{{ post.image.url }}" alt="{{ post.title }}" style="width:320px;height:220px;object-fit:cover;border-radius:16px;margin-bottom:1.5rem;background:#f4f4f4;">
+            {% else %}
+                <img src="https://undraw.co/api/illustrations/undraw_programming_re_kg9v.svg" alt="default" style="width:320px;height:220px;object-fit:cover;border-radius:16px;margin-bottom:1.5rem;background:#f4f4f4;">
+            {% endif %}
+            <h3 style="font-size:1.35rem;font-weight:700;color:#1a237e;margin:0 0 1.1rem 0;font-family:'Poppins','Segoe UI',Arial,sans-serif;">{{ post.title }}</h3>
+            <div style="font-size:1.05rem;line-height:1.7;color:#222;text-align:justify;min-height:60px;font-weight:400;font-family:'Roboto', Arial, sans-serif;">
+                {{ post.content|truncatewords_html:30|safe }}
+            </div>
+            <a href="{% url 'post_detail' post.id %}" style="margin-top:1.5rem;background:#a259c6;color:#fff;padding:0.6rem 1.5rem;border-radius:8px;text-decoration:none;font-weight:600;font-size:1.05rem;transition:background 0.18s;">Devamını Oku</a>
+        </div>
+    {% empty %}
+        <p>No posts available.</p>
+    {% endfor %}
+</div>
+{% endblock %}
